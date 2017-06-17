@@ -21,8 +21,8 @@ class CreateUsersTable extends Migration
             $table->text('address');
             $table->string('handphone');
             $table->string('id_number');
-            $table->enum('type',['admin','kost_owner','tenant']);
-            $table->string('avatar');
+            $table->enum('type',['admin','kost_owner','tenant'])->default('kost_owner');
+            $table->string('avatar')->default('avatars/user.png');
             $table->rememberToken();
             $table->timestamps();
         });
