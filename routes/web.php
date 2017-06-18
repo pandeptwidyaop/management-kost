@@ -21,7 +21,9 @@ Route::get('/', function () {
 });
 
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', function(){
+  return redirect('/redirecting');
+});
 
 Route::get('/redirecting', function(){
   if (Auth::user()->type == 'admin') {
@@ -35,17 +37,27 @@ Route::get('/redirecting', function(){
 
 //ADMIN
 
-Route::group(['middleware' => 'role:admin','prefix' => 'admin'], function(){
+Route::group(['middleware' => 'role:admin','prefix' => 'admin', 'namespace' => 'Admin'], function(){
   Route::get('/', function(){
     return redirect('admin/dashboard');
   });
   Route::get('dashboard','DashboardController@index');
+  Route::resource('packages','PackageController');
+  Route::resource('users','UserController');
+  Route::get('payments','PaymentController@index');
+  Route::get('payments/create','PaymentController@create');
 });
 
-Route::group(['middleware' => 'role:kost_owner','prefix' => 'ibu-kost'], function(){
-
+Route::group(['middleware' => 'role:kost_owner','prefix' => 'ibu-kost','namespace' => 'KostOwner'], function(){
+  Route::get('/', function(){
+    return redirect('ibu-kost/dashboard');
+  });
+  Route::get('dashboard','DashboardController@index');
 });
 
-Route::group(['middleware' => 'role:tenant','prefix' => 'anak-kost'], function(){
-
+Route::group(['middleware' => 'role:tenant','prefix' => 'anak-kost','namespace' => 'Tenat'], function(){
+  Route::get('/', function(){
+    return redirect('ibu-kost/dashboard');
+  });
+  Route::get('dashboard','DashboardController@index');
 });

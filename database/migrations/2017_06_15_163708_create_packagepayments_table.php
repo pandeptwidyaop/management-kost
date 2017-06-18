@@ -18,8 +18,8 @@ class CreatePackagepaymentsTable extends Migration
             $table->integer('userpackage_id')->unsigned();
             $table->float('price',8,2);
             $table->char('month',2);
-            $table->char('year',4);
             $table->enum('status',['approved','not_approved'])->default('not_approved');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
         Schema::table('packagepayments', function (Blueprint $table){

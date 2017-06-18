@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('id_number');
             $table->enum('type',['admin','kost_owner','tenant'])->default('kost_owner');
             $table->string('avatar')->default('avatars/user.png');
+            $table->enum('status',['active','not_active'])->default('active');
             $table->rememberToken();
             $table->timestamps();
         });

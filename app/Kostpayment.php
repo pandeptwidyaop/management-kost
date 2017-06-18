@@ -11,7 +11,8 @@ class Kostpayment extends Model
       'month',
       'year',
       'price',
-      'status'
+      'status',
+      'image'
     ];
 
     public function Rental(){

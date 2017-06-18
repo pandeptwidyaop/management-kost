@@ -10,8 +10,8 @@ class Packagepayment extends Model
       'userpackage_id',
       'price',
       'month',
-      'year',
-      'status'
+      'status',
+      'image'
     ];
 
     public function Userpackage(){

@@ -10,7 +10,8 @@ class Package extends Model
       'house_limit',
       'room_limit',
       'price',
-      'description'
+      'description',
+      'name'
     ];
 
     public function Userpackage(){

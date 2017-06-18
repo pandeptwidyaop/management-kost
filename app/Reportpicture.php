@@ -8,7 +8,8 @@ class Reportpicture extends Model
 {
     protected $fillable = [
       'report_id',
-      'url'
+      'url',
+      'read_status'
     ];
 
     public function Report(){

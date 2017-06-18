@@ -18,7 +18,7 @@ class CreateUserpackagesTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('package_id')->unsigned();
             $table->date('registered');
-            $table->date('expired');
+            $table->date('expired')->nullable();
             $table->enum('status',['active','not_active'])->default('active');
             $table->softDeletes();
             $table->timestamps();

@@ -17,6 +17,7 @@ class CreateReportsTable extends Migration
             $table->increments('id');
             $table->integer('rental_id')->unsigned();
             $table->text('message');
+            $table->enum('read_status',['read','not_read'])->default('not_read');
             $table->timestamps();
         });
         Schema::table('reports', function (Blueprint $table){
