@@ -48,6 +48,10 @@ Route::group(['middleware' => 'role:admin','prefix' => 'admin', 'namespace' => '
   Route::get('payments/create','PaymentController@create');
   Route::post('payments/create/{id}','PaymentController@createbilling');
   Route::post('payments/approve/{id}','PaymentController@approve');
+  Route::get('profile','ProfileController@index');
+  Route::post('profile','ProfileController@update');
+  Route::post('profile/avatar','ProfileController@changeimage');
+  Route::post('profile/password','ProfileController@changepassword');
 });
 
 Route::group(['middleware' => 'role:kost_owner','prefix' => 'ibu-kost','namespace' => 'KostOwner'], function(){

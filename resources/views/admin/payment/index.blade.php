@@ -57,7 +57,7 @@
                             <span>Pilih</span>
                           </button>
                           <ul class="dropdown-menu" role="menu">
-                            <li {!!($row->image == null) ? 'class="disabled"' : '' !!}><a href="{{Help::js()}}" onclick="approve('{{$row->id}}');">Approve</a></li>
+                            <li {!!($row->image == null || $row->status == 'approved') ? 'class="disabled"' : '' !!}><a href="{{Help::js()}}" onclick="approve('{{$row->id}}');">Approve</a></li>
                           </ul>
                         </div>
                       </td>
