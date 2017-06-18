@@ -70,7 +70,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
           <div class="box">
             <div class="box-header with-border">
               <h3 class="box-title">Pembayaran Belum Diterima</h3>
@@ -87,10 +87,11 @@
                 </tr>
                 @foreach ($paymentNotApproved as $row)
                   <tr>
-                    <th>{{$row->Userpackage->User->name}}</th>
-                    <th>Rp. {{number_format($row->price,2,'.',',')}}</th>
+                    <td>{{$row->id}}</td>
+                    <td>{{$row->Userpackage->User->name}}</td>
+                    <td>Rp. {{number_format($row->price,2,'.',',')}}</td>
                     <th><button type="button" class="btn btn-flat btn-xs btn-primary" onclick="showImage('{{Help::img($row->image)}}')">Bukti</button></th>
-                    <th><button type="button" class="btn btn-flat btn-xs btn-success">Approve</button></th>
+                    <td><button type="button" class="btn btn-flat btn-xs btn-success" onclick="approve('{{$row->id}}')">Approve</button></td>
                   </tr>
                 @endforeach
               </table>
@@ -100,7 +101,28 @@
       </div>
     </section>
   </div>
+  <form class="hidden" action="" method="post" id="formApprove">
+    {{ csrf_field() }}
+  </form>
 @endsection
 @section('js')
+  <script src="{{asset('plugins/bootbox/bootbox.min.js')}}"></script>
+  <script type="text/javascript">
+  function showImage(img){
+    bootbox.dialog({
+      message: '<img src="'+img+'" class="img-responsive">',
+      closeButton: true,
+      size: 'large'
+    });
+  }
 
+  function approve(id){
+    bootbox.confirm("Apakah anda ingin menerima pembayarana ini ?", function(result){
+      if (result) {
+        $('#formApprove').attr('action', '{{Help::url('payments/approve')}}/'+id);
+        $('#formApprove').submit();
+      }
+    });
+  }
+  </script>
 @endsection

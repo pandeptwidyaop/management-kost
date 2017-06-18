@@ -9,7 +9,8 @@ class Packagepayment extends Model
     protected $fillable = [
       'userpackage_id',
       'price',
-      'month',
+      'start_periode',
+      'end_periode',
       'status',
       'image'
     ];

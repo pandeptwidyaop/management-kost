@@ -46,6 +46,8 @@ Route::group(['middleware' => 'role:admin','prefix' => 'admin', 'namespace' => '
   Route::resource('users','UserController');
   Route::get('payments','PaymentController@index');
   Route::get('payments/create','PaymentController@create');
+  Route::post('payments/create/{id}','PaymentController@createbilling');
+  Route::post('payments/approve/{id}','PaymentController@approve');
 });
 
 Route::group(['middleware' => 'role:kost_owner','prefix' => 'ibu-kost','namespace' => 'KostOwner'], function(){

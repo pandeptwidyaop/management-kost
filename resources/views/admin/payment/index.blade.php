@@ -40,7 +40,8 @@
                     <th width="5%">Opsi</th>
                     <th>ID</th>
                     <th>Email</th>
-                    <th>Pembayaran Selama</th>
+                    <th>Periode</th>
+                    <th>Total Bulan</th>
                     <th>Tunggakan</th>
                     <th>Image</th>
                     <th>Status</th>
@@ -56,14 +57,20 @@
                             <span>Pilih</span>
                           </button>
                           <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{Help::url('users/'.$row->id)}}">Detail</a></li>
+                            <li {!!($row->image == null) ? 'class="disabled"' : '' !!}><a href="{{Help::js()}}" onclick="approve('{{$row->id}}');">Approve</a></li>
                           </ul>
                         </div>
                       </td>
                       <td>{{$row->id}}</td>
                       <td><a href="{{Help::url('users/'.$row->Userpackage->User->id)}}">{{$row->Userpackage->User->email}}</a></td>
-                      <td>{{$row->month}} bulan</td>
-                      <td>Rp. {{number_format($row->price,2,',','.')}}</td>
+                      <td>{{date('d F Y',strtotime($row->start_periode))}} - {{date('d F Y',strtotime($row->end_periode))}}</td>
+                      @php
+                        $start = Carbon\Carbon::parse($row->start_periode);
+                        $end = Carbon\Carbon::parse($row->end_periode);
+                        $bulan = $end->diffInMonths($start);
+                      @endphp
+                      <td>{{$bulan}} bulan</td>
+                      <td>Rp. {{number_format(($row->price * $bulan),2,',','.')}}</td>
                       @php
                         $img = "'".$row->image."'";
                       @endphp
@@ -81,10 +88,10 @@
       </div>
     </section>
   </div>
-  <form class="hidden" action="" method="post" id="formGanti">
+  <form class="hidden" action="" method="post" id="formApprove">
     {{ csrf_field() }}
-    <input type="hidden" name="_method" value="delete">
   </form>
+  <img src="" alt="">
 @endsection
 @section('js')
   <script src="{{asset('plugins/bootbox/bootbox.min.js')}}"></script>
@@ -94,11 +101,20 @@
   $(function () {
     $('#table').DataTable();
   });
-    function deletePackage(id){
-      bootbox.confirm("Apakah anda ingin menghapus paket ini ?", function(result){
+
+    function showImage(img){
+      bootbox.dialog({
+        message: '<img src="{{Help::img()}}/'+img+'" class="img-responsive">',
+        closeButton: true,
+        size: 'large'
+      });
+    }
+
+    function approve(id){
+      bootbox.confirm("Apakah anda ingin menerima pembayarana ini ?", function(result){
         if (result) {
-          $('#formDelete').attr('action', '{{Help::url('packages')}}/'+id);
-          $('#formDelete').submit();
+          $('#formApprove').attr('action', '{{Help::url('payments/approve')}}/'+id);
+          $('#formApprove').submit();
         }
       });
     }

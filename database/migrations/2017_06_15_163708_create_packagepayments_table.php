@@ -17,7 +17,8 @@ class CreatePackagepaymentsTable extends Migration
             $table->increments('id');
             $table->integer('userpackage_id')->unsigned();
             $table->float('price',8,2);
-            $table->char('month',2);
+            $table->date('start_periode');
+            $table->date('end_periode');
             $table->enum('status',['approved','not_approved'])->default('not_approved');
             $table->string('image')->nullable();
             $table->timestamps();

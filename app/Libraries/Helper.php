@@ -28,7 +28,7 @@ class Helper {
     return $type;
   }
 
-  public static function img($img){
+  public static function img($img=''){
     return url('images/'.$img);
   }
 
