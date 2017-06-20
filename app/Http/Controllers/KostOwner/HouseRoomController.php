@@ -33,7 +33,7 @@ class HouseRoomController extends Controller
       return view('kostowner.houseroom.index',compact('userpackage','can','token'));
     }
 
-    public function create(){
+    public function create(Request $request){
       if (Help::verify($request->key)) {
         return view('kostowner.houseroom.create');
       }else {
@@ -53,7 +53,7 @@ class HouseRoomController extends Controller
         foreach ($file as $img => $i) {
           $pict = new Housepicture;
           $name = 'houses/'.$i->hashName();
-          $img = Image::make($i)->fit(1024,700,function($const){
+          $img = Image::make($i)->fit(1400,500,function($const){
             $const->upsize();
           });
           Storage::disk('public')->put($name,$img->stream());
