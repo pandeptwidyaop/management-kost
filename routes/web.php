@@ -59,9 +59,13 @@ Route::group(['middleware' => 'role:kost_owner','prefix' => 'ibu-kost','namespac
     return redirect('ibu-kost/dashboard');
   });
   Route::get('dashboard','DashboardController@index');
+  Route::get('house-room','HouseRoomController@index');
+  Route::post('house-room','HouseRoomController@store');
+  Route::get('house-room/create-house','HouseRoomController@create');
+  Route::get('house-room/{id}/manage','HouseRoomController@manage');
 });
 
-Route::group(['middleware' => 'role:tenant','prefix' => 'anak-kost','namespace' => 'Tenat'], function(){
+Route::group(['middleware' => 'role:tenant','prefix' => 'anak-kost','namespace' => 'Tenant'], function(){
   Route::get('/', function(){
     return redirect('ibu-kost/dashboard');
   });

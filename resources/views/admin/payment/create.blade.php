@@ -56,7 +56,7 @@
                         }
                       }
                     @endphp
-                    @if ($notApproved == 0)
+                    @if ($notApproved == 0 && $row->expired != null)
                       @php
                         $dead = 0;
                         $ex = Carbon\Carbon::parse($row->expired);
@@ -64,15 +64,17 @@
                       @endphp
                       <tr>
                         <td>
-                          <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
-                              <span class="caret"></span>
-                              <span>Pilih</span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                              <li {!!($dead > 12) ? 'class="disabled"' : '' !!}><a href="{{Help::js()}}" onclick="createBilling('{{$row->id}}')">Buat Tagihan</a></li>
-                            </ul>
-                          </div>
+                          @if ($dead <= 12)
+                            <div class="btn-group">
+                              <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
+                                <span class="caret"></span>
+                                <span>Pilih</span>
+                              </button>
+                              <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{Help::js()}}" onclick="createBilling('{{$row->id}}')">Buat Tagihan</a></li>
+                              </ul>
+                            </div>
+                          @endif
                         </td>
                         <td>{{$row->Package->name}} - Rp. {{number_format($row->Package->price,2,',','.')}}</td>
                         <td>{{$row->User->name}}</td>

@@ -13,6 +13,8 @@ function getActiveMenu(){
     $('#a-users').addClass('active');
   }else if (add.search('admin/payments') > 0) {
     $('#a-payments').addClass('active');
+  }else if (add.search('kost-owner/house-room')) {
+    $('#k-house-room').addClass('active');
   }
 
 }

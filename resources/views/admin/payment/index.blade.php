@@ -51,15 +51,17 @@
                   @foreach ($data as $row)
                     <tr>
                       <td>
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
-                            <span class="caret"></span>
-                            <span>Pilih</span>
-                          </button>
-                          <ul class="dropdown-menu" role="menu">
-                            <li {!!($row->image == null || $row->status == 'approved') ? 'class="disabled"' : '' !!}><a href="{{Help::js()}}" onclick="approve('{{$row->id}}');">Approve</a></li>
-                          </ul>
-                        </div>
+                        @if ($row->image != null && $row->status == 'not_approved')
+                          <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
+                              <span class="caret"></span>
+                              <span>Pilih</span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                              <li {!!($row->image == null || $row->status == 'approved') ? 'class="disabled"' : '' !!}><a href="{{Help::js()}}" onclick="approve('{{$row->id}}');">Approve</a></li>
+                            </ul>
+                          </div>
+                        @endif
                       </td>
                       <td>{{$row->id}}</td>
                       <td><a href="{{Help::url('users/'.$row->Userpackage->User->id)}}">{{$row->Userpackage->User->email}}</a></td>

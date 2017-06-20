@@ -14,7 +14,16 @@
   <link rel="stylesheet" href="{{asset('dist/css/skins/_all-skins.min.css')}}">
   <link rel="stylesheet" href="{{asset('plugins/pace/pace.min.css')}}">
 </head>
-<body class="hold-transition skin-green fixed">
+@php
+  if (Auth::user()->type == 'admin') {
+    $skin = 'skin-red';
+  }else if (Auth::user()->type == 'kost_owner') {
+    $skin = 'skin-green';
+  }else {
+    $skin = 'skin-blue';
+  }
+@endphp
+<body class="hold-transition {{$skin}} fixed">
 <div class="wrapper">
   <header class="main-header">
     <a href="{{Help::url()}}" class="logo">
@@ -30,35 +39,6 @@
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          @if (Auth::user()->type == 'kost_owner')
-            <li class="dropdown messages-menu">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="fa fa-envelope-o"></i>
-                <span class="label label-success">4</span>
-              </a>
-              <ul class="dropdown-menu">
-                <li class="header">You have 4 messages</li>
-                <li>
-                  <ul class="menu">
-                    <li>
-                      <a href="#">
-                        <div class="pull-left">
-                          <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                        </div>
-                        <h4>
-                          Support Team
-                          <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                        </h4>
-                        <p>Why not buy a new awesome theme?</p>
-                      </a>
-                    </li>
-                    <!-- end message -->
-                  </ul>
-                </li>
-                <li class="footer"><a href="#">See All Messages</a></li>
-              </ul>
-            </li>
-          @endif
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="{{Help::img(Auth::user()->avatar)}}" class="user-image" alt="{{Auth::user()->name}}">

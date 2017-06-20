@@ -3,6 +3,8 @@
 namespace App\Libraries;
 
 use Auth;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 
 class Helper {
 
@@ -34,5 +36,16 @@ class Helper {
 
   public static function js(){
     return 'javascript:void(0);';
+  }
+
+  public static function token($text = ''){
+    $text = ($text == '')  ? csrf_token() : $text;
+    $data =  Hash::make($text);
+    return strtr($data,['$2y$10$' => '*']);
+  }
+
+  public static function verify($token){
+    $data = strtr($token,['*' => '$2y$10$']);
+    return Hash::check(csrf_token(),$data);
   }
 }
