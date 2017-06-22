@@ -20,4 +20,6 @@ class Room extends Model
     public function Rental(){
       return $this->hasMany('App\Rental');
     }
+
+  
 }

@@ -63,6 +63,8 @@ Route::group(['middleware' => 'role:kost_owner','prefix' => 'ibu-kost','namespac
   Route::post('house-room','HouseRoomController@store');
   Route::get('house-room/create-house','HouseRoomController@create');
   Route::get('house-room/{id}/manage','HouseRoomController@manage');
+  Route::get('house-room/{id}/edit','HouseRoomController@edit');
+  Route::get('house-room/{id}/manage/create-room','HouseRoomController@createRoom');
 });
 
 Route::group(['middleware' => 'role:tenant','prefix' => 'anak-kost','namespace' => 'Tenant'], function(){
