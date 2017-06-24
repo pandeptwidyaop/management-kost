@@ -18,7 +18,7 @@ class CreateKostpaymentsTable extends Migration
             $table->integer('rental_id')->unsigned();
             $table->char('month',2);
             $table->char('year',4);
-            $table->float('price',8,2);
+            $table->bigInteger('price');
             $table->enum('status',['approved','not_approved'])->default('not_approved');
             $table->string('image')->nullable();
             $table->timestamps();

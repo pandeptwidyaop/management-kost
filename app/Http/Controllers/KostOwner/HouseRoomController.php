@@ -13,6 +13,7 @@ use App\Room;
 use Image;
 use App\Housepicture;
 use Storage;
+use Illuminate\Support\Facades\Hash;
 
 class HouseRoomController extends Controller
 {
@@ -82,13 +83,95 @@ class HouseRoomController extends Controller
       return view('kostowner.houseroom.edit',compact('data'));
     }
 
+    public function update(Request $request, $id){
+      $house = House::find($id);
+      $house->update($request->all());
+      if ($request->hasFile('picture')) {
+        $pict = $request->file('picture');
+        foreach ($pict as $key => $value) {
+          $filename = 'houses/'.$value->hashName();
+          $gambar = Image::make($value)->fit(1400,500, function($c){
+            $c->upsize();
+          });
+          Storage::disk('public')->put($filename,$gambar->stream());
+          $hp = new Housepicture;
+          $hp->house_id = $house->id;
+          $hp->url = $filename;
+          $hp->save();
+        }
+      }
+      Session::flash('alert','Berhasil mengupdate rumah.');
+      return back();
+    }
+
+    public function removePicture($id){
+      $name = Housepicture::find($id)->url;
+      Housepicture::destroy($id);
+      Storage::delete('public/'.$name);
+      Session::flash('alert','Berhasil menghapus gambar');
+      return back();
+    }
+
     public function createRoom(Request $request,$house_id){
       if (Help::verify($request->key) && $this->getRoomStatus($house_id)) {
-
+        $data = House::find($house_id);
+        $limit = $data->Userpackage->Package->room_limit;
+        $use = count($data->Room);
+        $remains = $limit - $use;
+        return view('kostowner.houseroom.createroom', compact('data','remains'));
+      }else {
+        return back();
       }
     }
 
 
+
+    public function storeRoom(Request $request, $id){
+      $copy = 1;
+      if ($request->duplicate == 'on') {
+        $copy = $request->copy;
+      }
+      for ($i=0; $i < $copy; $i++) {
+        $room = new Room;
+        $room->fill($request->all());
+        $room->house_id = $id;
+        $room->save();
+      }
+      Session::flash('alert','Berhasil menambah '.$copy.' kamar.');
+      return redirect(Help::url('house-room/'.$id.'/manage'));
+    }
+
+    public function editRoom($id){
+      $data = Room::find($id);
+      return view('kostowner.houseroom.editroom', compact('data'));
+    }
+
+    public function updateRoom(Request $request,$id){
+      $room = Room::find($id);
+      $room->update($request->all());
+      Session::flash('alert','Berhasil mengubah kamar.');
+      return redirect(Help::url('house-room/'.$room->House->id.'/manage'));
+    }
+
+
+    public function destroyRoom($id){
+      Room::destroy($id);
+      Session::flash('alert','Berhasil menghapus kamar.');
+      return back();
+    }
+
+    public function destroyHouse(Request $request,$id){
+      $pass = $request->access;
+      if (Hash::check($pass,Auth::user()->password)) {
+        //House::destroy($id);
+        Session::flash('alert','Berhasil menghapus rumah beserta isinya');
+        $url = Help::url('house-room');
+      }else {
+        Session::flash('alert','Anda tidak di ijikan untuk menghapus data ini.');
+        $url = Help::url('house-room/'.$id.'/manage');
+      }
+      return redirect($url);
+    }
 
     //----------------------------------------------------------------------------------
 

@@ -24,7 +24,13 @@
           {{Session::get('alert')}}
         </div>
       @endif
-
+      @if (!$can)
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <h4><i class="icon fa fa-check"></i> Informasi !</h4>
+          Penggunaan Kamar anda telah habis, anda tidak bisa menambah kamar pada rumah ini.
+        </div>
+      @endif
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
@@ -84,7 +90,7 @@
                 <div class="col-md-2">
                   <div class="btn-group">
                     <a class="btn btn-success btn-flat" href="{{Help::url('house-room/'.$id.'/edit')}}">Edit</a>
-                    <button class="btn btn-danger btn-flat">Hapus</button>
+                    <button class="btn btn-danger btn-flat" onclick="deleteHouse('{{$id}}')">Hapus</button>
                   </div>
                 </div>
               </div>
@@ -121,7 +127,7 @@
                       foreach ($room->Rental as $rent) {
                         if ($rent->status == 'active') {
                           $sewa = $rent->User;
-                          $registered = $rent->created_at;
+                          $registered = date('d F Y',strtotime($rent->created_at));
                         }
                         foreach ($rent->Report as $r) {
                           if ($r->read_status == 'not_read') {
@@ -144,13 +150,21 @@
                           </button>
                           <ul class="dropdown-menu" role="menu">
                             <li><a href="{{Help::url('house-room/'.$room->id.'/room-edit')}}">Edit</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{{Help::js()}}" onclick="deleteRoom('{{$room->id}}')">Hapus</a></li>
                           </ul>
                         </div>
                       </td>
                       <td>{{$room->number}}</td>
                       <td>Rp. {{number_format($room->price,2,',','.')}}</td>
-                      <td><a href="{{Help::url('members/'.$sewa->id)}}">{{$sewa->name}}</a></td>
-                      <td>{{date('d F Y',strtotime($registered))}}</td>
+                      <td>
+                        @if ($sewa == 'Kosong')
+                          <span class="label label-success">{{$sewa}}</span>
+                        @else
+                          <a href="{{Help::url('members/'.$sewa->id)}}">{{$sewa->name}}</a>
+                        @endif
+                      </td>
+                      <td>{{$registered}}</td>
                       <td>{{$laporan}}</td>
                       <td>Rp. {{number_format($tunggakan,2,',','.')}}</td>
                     </tr>
@@ -163,6 +177,11 @@
       </div>
     </section>
   </div>
+  <form class="hidden" action="" method="post" id="formDelete">
+    <input type="hidden" name="_method" value="delete">
+    {{ csrf_field() }}
+    <input type="hidden" name="access" value="" id="password">
+  </form>
 @endsection
 @section('js')
   <script src="{{asset('plugins/bootbox/bootbox.min.js')}}"></script>
@@ -172,5 +191,36 @@
     $(function(){
         $('#table').dataTable();
     });
+
+    function deleteRoom(id){
+      var add = '{{Help::url('house-room')}}/'+id+'/room';
+      bootbox.confirm("Apakah anda ingin meghapus kamar ini ? Semua data penyewaan yang terhubung akan terhapus juga.", function(res){
+        if (res) {
+          $("#formDelete").attr('action', add);
+          $("#formDelete").submit();
+        }
+      });
+    }
+
+    function deleteHouse(id){
+      var add = '{{Help::url('house-room')}}/'+id+'/house';
+      bootbox.confirm('Apakah anda ingin menghapus rumah ini ? Semua data kamar dan penyewaan akan hilang.', function(res){
+        if (res) {
+          bootbox.prompt({
+            title: 'Masukan password anda.',
+            inputType: 'password',
+            callback: function(pass){
+              if (pass == null) {
+                bootbox.alert("Silakan masukan password anda !");
+              }else {
+                $('#formDelete').attr('action', add);
+                $('#formDelete #password').val(pass);
+                $('#formDelete').submit();
+              }
+            }
+          });
+        }
+      });
+    }
   </script>
 @endsection

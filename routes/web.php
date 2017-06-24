@@ -64,7 +64,14 @@ Route::group(['middleware' => 'role:kost_owner','prefix' => 'ibu-kost','namespac
   Route::get('house-room/create-house','HouseRoomController@create');
   Route::get('house-room/{id}/manage','HouseRoomController@manage');
   Route::get('house-room/{id}/edit','HouseRoomController@edit');
+  Route::put('house-room/{id}','HouseRoomController@update');
+  Route::post('house-room/{id}/room','HouseRoomController@storeRoom');
+  Route::get('house-room/{id}/room-edit','HouseRoomController@editRoom');
+  Route::put('house-room/{id}/room-edit','HouseRoomController@updateRoom');
   Route::get('house-room/{id}/manage/create-room','HouseRoomController@createRoom');
+  Route::delete('house-room/{id}/remove-picture','HouseRoomController@removePicture');
+  Route::delete('house-room/{id}/room','HouseRoomController@destroyRoom');
+  Route::delete('house-room/{id}/house','HouseRoomController@destroyHouse');
 });
 
 Route::group(['middleware' => 'role:tenant','prefix' => 'anak-kost','namespace' => 'Tenant'], function(){

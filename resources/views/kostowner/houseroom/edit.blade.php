@@ -35,7 +35,7 @@
             <div class="box-body">
               <div class="row">
                 <div class="col-lg-8 col-md-8 col-sm-12 col-xl-offset-12">
-                  <form role="form" action="{{Help::url('house-room')}}" method="post" enctype="multipart/form-data">
+                  <form role="form" action="{{Help::url('house-room/'.$data->id)}}" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="_method" value="put">
                     {{ csrf_field() }}
                     <div class="box-body">
@@ -49,7 +49,7 @@
                       </div>
                       <div class="form-group">
                         <label>Add Picture</label>
-                        <input type="file" name="picture[]" class="form-control" accept="image/*" multiple="true" required>
+                        <input type="file" name="picture[]" class="form-control" accept="image/*" multiple="true">
                       </div>
                     </div>
                     <div class="box-footer">
@@ -82,10 +82,21 @@
       </div>
     </section>
   </div>
+  <form class="hidden" action="" method="post" id="formSubmit">
+    {{ csrf_field() }}
+    <input type="hidden" name="_method" value="delete">
+  </form>
 @endsection
 @section('js')
-  
+  <script src="{{asset('plugins/bootbox/bootbox.min.js')}}" charset="utf-8"></script>
   <script type="text/javascript">
-
+    function removePicture(id){
+      bootbox.confirm("Apakah anda ingin menghapus gambar ini ?", function(res){
+        if (res) {
+          $("#formSubmit").attr('action', '{{Help::url('house-room')}}/'+id+'/remove-picture');
+          $('#formSubmit').submit();
+        }
+      });
+    }
   </script>
 @endsection

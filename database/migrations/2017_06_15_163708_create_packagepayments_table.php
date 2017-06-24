@@ -16,7 +16,7 @@ class CreatePackagepaymentsTable extends Migration
         Schema::create('packagepayments', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('userpackage_id')->unsigned();
-            $table->float('price',8,2);
+            $table->bigInteger('price');
             $table->date('start_periode');
             $table->date('end_periode');
             $table->enum('status',['approved','not_approved'])->default('not_approved');

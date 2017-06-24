@@ -18,7 +18,7 @@ class CreateRoomsTable extends Migration
             $table->integer('house_id')->unsigned();
             $table->char('number',4);
             $table->text('facility');
-            $table->float('price',8,2);
+            $table->bigInteger('price');
             $table->timestamps();
         });
         Schema::table('rooms', function (Blueprint $table){

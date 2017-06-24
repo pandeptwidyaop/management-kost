@@ -18,7 +18,7 @@ class CreatePackagesTable extends Migration
             $table->string('name');
             $table->integer('house_limit');
             $table->integer('room_limit');
-            $table->float('price',8,2);
+            $table->bigInteger('price');
             $table->text('description');
             $table->timestamps();
         });
