@@ -48,4 +48,14 @@ class Helper {
     $data = strtr($token,['*' => '$2y$10$']);
     return Hash::check(csrf_token(),$data);
   }
+
+  public static function encode($string){
+    $data = Crypt::encryptString($string);
+    return strtr($data,['=' => '*']);
+  }
+
+  public static function decode($string){
+    $data = strtr($string, ['*' => '=']);
+    return Crypt::decryptString($data);
+  }
 }

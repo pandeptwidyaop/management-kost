@@ -23,7 +23,7 @@
     </li>
   @elseif (Auth::user()->type == 'kost_owner')
 
-    <li id="k-house-room">
+    <li id="k-house">
       <a href="{{Help::url('house-room')}}">
         <i class="fa fa-building"></i> <span>House & Rooms</span>
       </a>

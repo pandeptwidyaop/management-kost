@@ -35,6 +35,8 @@ Route::get('/redirecting', function(){
   }
 });
 
+Route::get('/registration','RegistrationController@index');
+
 //ADMIN
 
 Route::group(['middleware' => 'role:admin','prefix' => 'admin', 'namespace' => 'Admin'], function(){
@@ -59,6 +61,7 @@ Route::group(['middleware' => 'role:kost_owner','prefix' => 'ibu-kost','namespac
     return redirect('ibu-kost/dashboard');
   });
   Route::get('dashboard','DashboardController@index');
+
   Route::get('house-room','HouseRoomController@index');
   Route::post('house-room','HouseRoomController@store');
   Route::get('house-room/create-house','HouseRoomController@create');
@@ -72,6 +75,11 @@ Route::group(['middleware' => 'role:kost_owner','prefix' => 'ibu-kost','namespac
   Route::delete('house-room/{id}/remove-picture','HouseRoomController@removePicture');
   Route::delete('house-room/{id}/room','HouseRoomController@destroyRoom');
   Route::delete('house-room/{id}/house','HouseRoomController@destroyHouse');
+
+  Route::get('members', 'MembersController@index');
+  Route::get('members/create','MembersController@create');
+  Route::get('members/create/{id}/room','MembersController@listroom');
+  Route::post('members/create','MembersController@store');
 });
 
 Route::group(['middleware' => 'role:tenant','prefix' => 'anak-kost','namespace' => 'Tenant'], function(){
