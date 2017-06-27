@@ -36,6 +36,7 @@ Route::get('/redirecting', function(){
 });
 
 Route::get('/registration','RegistrationController@index');
+Route::post('/registration','RegistrationController@register');
 
 //ADMIN
 
@@ -80,6 +81,9 @@ Route::group(['middleware' => 'role:kost_owner','prefix' => 'ibu-kost','namespac
   Route::get('members/create','MembersController@create');
   Route::get('members/create/{id}/room','MembersController@listroom');
   Route::post('members/create','MembersController@store');
+  Route::get('members/{id}/change','MembersController@changeRoomMember');
+  Route::put('members/{id}/change','MembersController@change');
+  Route::delete('members/{id}/remove','MembersController@remove');
 });
 
 Route::group(['middleware' => 'role:tenant','prefix' => 'anak-kost','namespace' => 'Tenant'], function(){

@@ -30,6 +30,6 @@ class MemberRegistration extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.memberregister');
+        return $this->markdown('mail.memberregister');
     }
 }

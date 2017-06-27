@@ -72,7 +72,7 @@
                                   <span>Pilih</span>
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
-                                  <li><a href="{{Help::url('')}}">Pindah Kamar</a></li>
+                                  <li><a href="{{Help::url('members/'.$rent->id.'/change')}}">Pindah Kamar</a></li>
                                   <li><a href="{{Help::js()}}">Tukar Kamar</a></li>
                                   <li class="divider"></li>
                                   <li><a href="{{Help::js()}}" onclick="remove('{{$rent->id}}')">Keluarkan</a></li>
@@ -104,6 +104,7 @@
     {{ csrf_field() }}
     <input type="hidden" name="access" value="" id="password">
   </form>
+
 @endsection
 @section('js')
   <script src="{{asset('plugins/bootbox/bootbox.min.js')}}"></script>
@@ -114,5 +115,25 @@
         $('#table').dataTable();
     });
 
+    function remove(id){
+      var act = "{{Help::url('members')}}/"+id+"/remove";
+      bootbox.confirm("Apakah anda yakin ingin mengeluarkan member ini ?", function(res){
+        if (res) {
+          bootbox.prompt({
+            title: "Silakan masukan password anda.",
+            inputType: "password",
+            callback: function(pass){
+              if (pass != null) {
+                $('#formDelete').attr('action', act);
+                $('#formDelete #password').val(pass);
+                $('#formDelete').submit();
+              }else {
+                bootbox.alert("Silakan masukan password anda!");
+              }
+            }
+          });
+        }
+      });
+    }
   </script>
 @endsection
