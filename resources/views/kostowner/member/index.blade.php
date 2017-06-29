@@ -73,7 +73,7 @@
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
                                   <li><a href="{{Help::url('members/'.$rent->id.'/change')}}">Pindah Kamar</a></li>
-                                  <li><a href="{{Help::js()}}">Tukar Kamar</a></li>
+                                  <li><a href="{{Help::url('members/'.$rent->id.'/switch')}}">Tukar Kamar</a></li>
                                   <li class="divider"></li>
                                   <li><a href="{{Help::js()}}" onclick="remove('{{$rent->id}}')">Keluarkan</a></li>
                                 </ul>

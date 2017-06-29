@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use App\Mail\MemberRegistration as Reg;
 use Mail;
 use App\User;
+use DB;
 
 
 class MembersController extends Controller
@@ -64,6 +65,25 @@ class MembersController extends Controller
       return redirect(Help::url('members'));
     }
 
+    public function switchRoomMember($id){
+      $rental = Rental::findOrFail($id);
+      $userpackage = Userpackage::where('user_id',Auth::user()->id)->firstOrFail();
+      return view('kostowner.member.switch', compact('rental','userpackage','id'));
+    }
+
+    public function switch(Request $request,$id){
+      $from = Rental::findOrFail($id);
+      $A = Rental::findOrFail($id);
+      $to = Rental::findOrFail($request->rental);
+      $B = Rental::findOrFail($request->rental);
+      $A->room_id = $to->room_id;
+      $B->room_id = $from->room_id;
+      $A->save();
+      $B->save();
+      Session::flash('alert','Berhasil menukarkan kamar');
+      return redirect(Help::url('members'));
+    }
+
     public function remove(Request $r, $id){
       if (Hash::check($r->access,Auth::user()->password)) {
         $rent = Rental::findOrFail($id);
@@ -107,6 +127,28 @@ class MembersController extends Controller
         }
       }
       $data = Room::where('house_id',$id)->whereNotIn('id',$list)->get();
+      return response()->json($data);
+    }
+
+    public function getlistswitch($house_id){
+      $list = array();
+      $userpackage = Userpackage::where('user_id',Auth::user()->id)->first();
+      foreach ($userpackage->House as $h) {
+        foreach ($h->Room as $r) {
+          foreach ($r->Rental as $rent) {
+            if ($rent->status == 'active') {
+              $list[] = $rent->Room->id;
+            }
+          }
+        }
+      }
+      $data = DB::table('rooms')
+        ->select('rentals.id','rooms.number','users.name')
+        ->join('rentals','rentals.room_id','=','rooms.id')
+        ->join('users','users.id','=','rentals.user_id')
+        ->where('rooms.house_id',$house_id)
+        ->whereIn('rooms.id',$list)
+        ->get();
       return response()->json($data);
     }
 }

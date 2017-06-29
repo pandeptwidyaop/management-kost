@@ -30,7 +30,7 @@ Route::get('/redirecting', function(){
       return redirect('admin');
   } elseif (Auth::user()->type == 'kost_owner') {
       return redirect('ibu-kost');
-  } else {
+  } elseif (Auth::user()->type == 'tenant') {
       return redirect('anak-kost');
   }
 });
@@ -80,15 +80,18 @@ Route::group(['middleware' => 'role:kost_owner','prefix' => 'ibu-kost','namespac
   Route::get('members', 'MembersController@index');
   Route::get('members/create','MembersController@create');
   Route::get('members/create/{id}/room','MembersController@listroom');
+  Route::get('members/{id}/getlistswitch','MembersController@getlistswitch');
   Route::post('members/create','MembersController@store');
   Route::get('members/{id}/change','MembersController@changeRoomMember');
   Route::put('members/{id}/change','MembersController@change');
+  Route::get('members/{id}/switch','MembersController@switchRoomMember');
+  Route::put('members/{id}/switch','MembersController@switch');
   Route::delete('members/{id}/remove','MembersController@remove');
 });
 
 Route::group(['middleware' => 'role:tenant','prefix' => 'anak-kost','namespace' => 'Tenant'], function(){
   Route::get('/', function(){
-    return redirect('ibu-kost/dashboard');
+    return redirect('anak-kost/dashboard');
   });
   Route::get('dashboard','DashboardController@index');
 });
