@@ -87,6 +87,10 @@ Route::group(['middleware' => 'role:kost_owner','prefix' => 'ibu-kost','namespac
   Route::get('members/{id}/switch','MembersController@switchRoomMember');
   Route::put('members/{id}/switch','MembersController@switch');
   Route::delete('members/{id}/remove','MembersController@remove');
+
+  Route::get('payments', 'PaymentController@index');
+
+  Route::get('bills', 'BillController@index');
 });
 
 Route::group(['middleware' => 'role:tenant','prefix' => 'anak-kost','namespace' => 'Tenant'], function(){
