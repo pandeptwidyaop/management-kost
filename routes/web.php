@@ -91,6 +91,9 @@ Route::group(['middleware' => 'role:kost_owner','prefix' => 'ibu-kost','namespac
   Route::get('payments', 'PaymentController@index');
 
   Route::get('bills', 'BillController@index');
+  Route::get('bills/{id}', 'BillController@show');
+  Route::get('bills/{id}/payment','BillController@payment');
+  Route::get('banks','BillController@getListOfBank');
 });
 
 Route::group(['middleware' => 'role:tenant','prefix' => 'anak-kost','namespace' => 'Tenant'], function(){

@@ -16,7 +16,20 @@ window.Vue = require('vue');
  */
 
 Vue.component('example', require('./components/Example.vue'));
+Vue.component('bank', require('./components/Bank.vue'));
+Vue.component('bank-list', require('./components/BankList.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    data: {
+      banks: [],
+      total: ''
+    },
+    created(){
+      axios.get('http://localhost:8000/ibu-kost/banks').then(response =>{
+        this.banks = response.data;
+        let total = document.head.querySelector('meta[name="total"]');
+        this.total = total.content;
+      });
+    }
 });

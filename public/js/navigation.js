@@ -17,6 +17,8 @@ function getActiveMenu(){
     $('#k-house').addClass('active');
   }else if (add.search('members') > 0) {
     $('#k-members').addClass('active');
+  }else if (add.search('bills') > 0) {
+    $('#k-bill').addClass('active');
   }
 
 }
