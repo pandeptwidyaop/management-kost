@@ -107,15 +107,8 @@
                 <td>Rp. {{number_format($total,2,',','.')}}</td>
               </tr>
               <tr>
-                <th>PPN (10%)</th>
-                @php
-                  $pajak = ($bulan * $bill->price) / 10;
-                @endphp
-                <td>Rp. {{number_format($pajak,2,',','.')}}</td>
-              </tr>
-              <tr>
                 <th>Total Bayar</th>
-                <td><b>Rp. {{number_format($pajak + $total,2,',','.')}}</b></td>
+                <td><b>Rp. {{number_format($total,2,',','.')}}</b></td>
               </tr>
             </table>
           </div>
@@ -126,14 +119,44 @@
           <div class="col-xs-12">
             <a href="{{Help::url('packages/changeplan?billing='.$bill->id)}}" class="btn btn-default pull-left">Ubah Paket</a>
             <a href="{{Help::url('bills/'.$bill->id.'/payment')}}" target="popup" onclick="window.open('{{Help::url('bills/'.$bill->id.'/payment')}}','Pembayaran Tagihan','width=600,height=600')" class="btn btn-success pull-right"><i class="fa fa-credit-card" ></i> Lanjutkan ke Pembayaran</a>
-            <a href="{{Help::url('bills/'.$bill->id.'/confirm')}}" class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-circle-o-notch fa-spin"></i> Konfirmasi Pembayaran</a>
+            <a href="{{Help::js()}}" onclick="showModal()" class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-circle-o-notch fa-spin"></i> Konfirmasi Pembayaran</a>
           </div>
         @endif
       </div>
     </section>
     <div class="clearfix"></div>
   </div>
+  <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="">Konfirmasi Pembayaran</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form" action="{{Help::url('bills/'.$bill->id.'/confirm')}}" method="post" enctype="multipart/form-data" id="formConfirm">
+            {{ csrf_field() }}
+            <div class="form-group">
+              <label for="bukti">Bukti Pembayaran</label>
+              <input type="file" class="form-control" id="bukti" placeholder="Masukan Bukti Pembayaran" accept="image/*" name="image">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="sendConfirm()">Konfirmasi</button>
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection
 @section('js')
-
+<script type="text/javascript">
+  function showModal(){
+    $('#modal').modal('show');
+  }
+  function sendConfirm(){
+    $('#formConfirm').submit();
+  }
+</script>
 @endsection

@@ -9,6 +9,8 @@ use App\Userpackage;
 use Carbon\Carbon;
 use Auth;
 use Help;
+use Storage;
+use Session;
 
 class BillController extends Controller
 {
@@ -28,9 +30,24 @@ class BillController extends Controller
     {
       $pay = Packagepayment::findOrFail($id);
       $bulan = Carbon::parse($pay->start_periode)->diffInMonths(Carbon::parse($pay->end_periode));
-      $total = (($bulan * $pay->price) / 10) + ($bulan * $pay->price);
+      $total = ($bulan * $pay->price);
       $total = number_format($total,2,',','.');
       return view('kostowner.bill.pay', compact('pay','total'));
+    }
+
+    public function confirm(Request $request,$id)
+    {
+      if ($request->hasFile('image')) {
+        $pict = $request->file('image');
+        $name = Storage::disk('public')->putFile('packagepayment/'.$id,$pict);
+        $pay = Packagepayment::findOrFail($id);
+        $pay->image = $name;
+        $pay->save();
+        Session::flash('alert','Berhasil mengkonfirmasi pembayaran.');
+        return redirect(Help::url('bills'));
+      }else {
+        return back();
+      }
     }
 
 

@@ -93,6 +93,7 @@ Route::group(['middleware' => 'role:kost_owner','prefix' => 'ibu-kost','namespac
   Route::get('bills', 'BillController@index');
   Route::get('bills/{id}', 'BillController@show');
   Route::get('bills/{id}/payment','BillController@payment');
+  Route::post('bills/{id}/confirm', 'BillController@confirm');
   Route::get('banks','BillController@getListOfBank');
 });
 
