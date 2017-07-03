@@ -39,7 +39,7 @@ class BillController extends Controller
     {
       if ($request->hasFile('image')) {
         $pict = $request->file('image');
-        $name = Storage::disk('public')->putFile('packagepayment/'.$id,$pict);
+        $name = Storage::disk('public')->putFile('packagepayments',$pict);
         $pay = Packagepayment::findOrFail($id);
         $pay->image = $name;
         $pay->save();
