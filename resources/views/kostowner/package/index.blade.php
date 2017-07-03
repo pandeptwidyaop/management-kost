@@ -19,9 +19,22 @@
       <div class="alert alert-info">
         <h4><i class="icon fa fa-check"></i> Informasi !</h4>
         <p>Paket Anda saat ini adalah : Paket <b>{{($userpackage != null) ? $userpackage->Package->name : 'BELUM TERDAFTAR'}}</b></p>
-        <p>Periode Pembayaran : {{($userpackage != null) ? date('d/m/Y',strtotime($userpackage->registered)) .' - '. date('d/m/Y',strtotime($userpackage->expired)) : '-'}}</p>
         @php
-          $bulan = Carbon\Carbon::parse($userpackage->registered)->diffInMonths(Carbon\Carbon::parse($userpackage->expired));
+          $periode = '-';
+          if ($userpackage != null) {
+            if ($userpackage->expired != null) {
+              $periode = date('d/m/Y',strtotime($userpackage->registered)) .' - '. date('d/m/Y',strtotime($userpackage->expired));
+            }else {
+              $periode = date('d/m/Y',strtotime($userpackage->registered)) .' - ~';
+            }
+          }
+        @endphp
+        <p>Periode Pembayaran : {{$periode}}</p>
+        @php
+          $bulan = 0;
+          if ($userpackage != null) {
+            $bulan = Carbon\Carbon::parse($userpackage->registered)->diffInMonths(Carbon\Carbon::parse($userpackage->expired));
+          }
         @endphp
         <p>Tipe Pembayaran : Setiap {{$bulan}} bulan.</p>
       </div>
@@ -74,6 +87,7 @@
       </div>
     </section>
   </div>
+
 @endsection
 @section('js')
   <script type="text/javascript">

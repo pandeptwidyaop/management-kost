@@ -91,6 +91,9 @@ Route::group(['middleware' => 'role:kost_owner','prefix' => 'ibu-kost','namespac
   Route::get('payments', 'PaymentController@index');
 
   Route::get('packages', 'PackageController@index');
+  Route::get('packages/{id}/select', 'PackageController@select');
+  Route::get('packages/{id}/upgrade', 'PackageController@upgrade');
+  Route::get('packages/pricing','PackageController@pricing');
 
   Route::get('bills', 'BillController@index');
   Route::get('bills/{id}', 'BillController@show');
