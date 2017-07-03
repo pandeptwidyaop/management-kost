@@ -19,6 +19,9 @@ function getActiveMenu(){
     $('#k-members').addClass('active');
   }else if (add.search('bills') > 0) {
     $('#k-bill').addClass('active');
+  }else if (add.search('packages') > 0) {
+    $('#k-packages').addClass('active');
+
   }
 
 }
