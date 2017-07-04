@@ -89,7 +89,10 @@
                   <tr>
                     <td>{{$row->id}}</td>
                     <td>{{$row->Userpackage->User->name}}</td>
-                    <td>Rp. {{number_format($row->price,2,'.',',')}}</td>
+                    @php
+                      $month = Carbon\Carbon::parse($row->start_periode)->diffInMonths(Carbon\Carbon::parse($row->end_periode));
+                    @endphp
+                    <td>Rp. {{number_format($row->price * $month,2,'.',',')}}</td>
                     <th><button type="button" class="btn btn-flat btn-xs btn-primary" onclick="showImage('{{Help::img($row->image)}}')">Bukti</button></th>
                     <td><button type="button" class="btn btn-flat btn-xs btn-success" onclick="approve('{{$row->id}}')">Approve</button></td>
                   </tr>

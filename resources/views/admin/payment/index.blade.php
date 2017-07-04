@@ -93,7 +93,6 @@
   <form class="hidden" action="" method="post" id="formApprove">
     {{ csrf_field() }}
   </form>
-  <img src="" alt="">
 @endsection
 @section('js')
   <script src="{{asset('plugins/bootbox/bootbox.min.js')}}"></script>
@@ -101,7 +100,9 @@
   <script src="{{asset('plugins/datatables/dataTables.bootstrap.min.js')}}"></script>
   <script type="text/javascript">
   $(function () {
-    $('#table').DataTable();
+    $('#table').DataTable({
+      order: [[7,"desc"]]
+    });
   });
 
     function showImage(img){

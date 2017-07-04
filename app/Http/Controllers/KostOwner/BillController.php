@@ -32,7 +32,8 @@ class BillController extends Controller
       $bulan = Carbon::parse($pay->start_periode)->diffInMonths(Carbon::parse($pay->end_periode));
       $total = ($bulan * $pay->price);
       $total = number_format($total,2,',','.');
-      return view('kostowner.bill.pay', compact('pay','total'));
+      $bank = $this->getListOfBank();
+      return view('kostowner.bill.pay', compact('pay','total','bank'));
     }
 
     public function confirm(Request $request,$id)
@@ -53,7 +54,7 @@ class BillController extends Controller
 
     public function getListOfBank()
     {
-      $data = [
+      $data = (object) [
         [
           'bank' => 'BCA',
           'name' => 'PT. MANAGEMENT KOST',
@@ -116,6 +117,6 @@ class BillController extends Controller
         ],
       ];
 
-      return response()->json($data);
+      return $data;
     }
 }

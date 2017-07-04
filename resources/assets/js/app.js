@@ -26,7 +26,8 @@ const app = new Vue({
       total: ''
     },
     created(){
-      axios.get('http://localhost:8000/ibu-kost/banks').then(response =>{
+      let url = document.head.querySelector('meta[name="url"]');
+      axios.get(url).then(response =>{
         this.banks = response.data;
         let total = document.head.querySelector('meta[name="total"]');
         this.total = total.content;
