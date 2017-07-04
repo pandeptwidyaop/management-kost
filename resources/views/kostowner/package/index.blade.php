@@ -67,11 +67,11 @@
                   <a href="{{Help::url('packages/mypackage')}}" class="btn btn-block btn-primary btn-flat">
                     Paket Anda Saat Ini
                   </a>
-                @elseif ($house < $p->house_limit && $room < ($p->house_limit * $p->room_limit))
+                @elseif ($userpackage->Package->price < $p->price && $room < ($p->house_limit * $p->room_limit))
                   <a href="{{Help::url('packages/'.$p->id.'/upgrade?key='.$key)}}" class="btn btn-flat btn-block btn-success">
                     Upgrade Ke Paket Ini
                   </a>
-                @elseif ($house <= $p->house_limit && $room <= $p->room_limit)
+                @elseif ($house <= $p->house_limit && $room <= $p->room_limit && $userpackage->Package->price > $p->price)
                   <a href="{{Help::url('packages/'.$p->id.'/downgrade?key='.$key)}}" class="btn btn-default btn-block btn-flat">
                     Downgrade Ke Paket Ini
                   </a>

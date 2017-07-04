@@ -33,7 +33,7 @@ class PackageController extends Controller
     }
 
     public function select(Request $request, $id){
-      if (Help::verify($request->key)) {
+      if (Help::verify($request->key) && $this->getPackageStatus()) {
         $package = Package::findOrFail($id);
         if ($package->price == 0) {
           $userpackage = new Userpackage;
@@ -50,6 +50,30 @@ class PackageController extends Controller
           return redirect(Help::url('packages/pricing?p='.$paket.'&a='.$action.'&k='.$token));
         }
       }else {
+        return back();
+      }
+    }
+
+    public function upgrade(Request $request,$id){
+      if (Help::verify($request->key) && $this->getPaymentStatus()) {
+        $package_id = Help::encode($id);
+        $action = Help::encode('upgrade');
+        $token = Help::token();
+        return redirect(Help::url('packages/pricing?p='.$package_id.'&a='.$action.'&k='.$token));
+      }else {
+        Session::flash('alert','Pastikan tidak ada tunggakan pembayaran.');
+        return back();
+      }
+    }
+
+    public function downgrade(Request $request, $id){
+      if (Help::verify($request->key) && $this->getPaymentStatus()) {
+        $package_id = Help::encode($id);
+        $action = Help::encode('downgrade');
+        $token = Help::token();
+        return redirect(Help::url('packages/pricing?p='.$package_id.'&a='.$action.'&k='.$token));
+      }else {
+        Session::flash('alert','Pastikan tidak ada tunggakan pembayaran.');
         return back();
       }
     }
@@ -78,17 +102,89 @@ class PackageController extends Controller
         $userpackage->registered = Carbon::now();
         $userpackage->expired = Carbon::now()->addDays(2);
         $userpackage->save();
-
         $payment = new Packagepayment;
         $payment->userpackage_id = $userpackage->id;
         $payment->price = $p->price;
         $payment->start_periode = Carbon::now();
         $payment->end_periode = Carbon::now()->addMonths($request->payment);
         $payment->save();
-
-        Session::flash('alert','Berhasil mendaftar paket baru, silakan melakukan pembayarn sebelum '.date('d F Y',strtotime($userpackage->expired)));
+        Session::flash('alert','Berhasil mendaftar paket baru, silakan melakukan pembayaran sebelum '.date('d F Y',strtotime($userpackage->expired)));
+        return redirect(Help::url('bills'));
+      }else if ($act == 'upgrade'){
+        $userpackage = Userpackage::where('user_id',Auth::user()->id)->firstOrFail();
+        $userpackage->package_id = $p->id;
+        $userpackage->registered = Carbon::now();
+        $userpackage->expired = Carbon::now()->addDays(1);
+        $userpackage->save();
+        $payment = new Packagepayment;
+        $payment->userpackage_id = $userpackage->id;
+        $payment->price = $p->price;
+        $payment->start_periode = Carbon::now();
+        $payment->end_periode = Carbon::now()->addMonths($request->payment);
+        $payment->save();
+        Session::flash('alert','Berhasil mengupgrade paket. Silakan melakukan pembayaran sebelum '.date('d F Y',strtotime($userpackage->expired)));
+        return redirect(Help::url('bills'));
+      }elseif ($act == 'downgrade') {
+        $userpackage = Userpackage::where('user_id',Auth::user()->id)->firstOrFail();
+        $userpackage->package_id = $p->id;
+        $userpackage->registered = Carbon::now();
+        $userpackage->expired = Carbon::now()->addDays(1);
+        $userpackage->save();
+        $payment = new Packagepayment;
+        $payment->userpackage_id = $userpackage->id;
+        $payment->price = $p->price;
+        $payment->start_periode = Carbon::now();
+        $payment->end_periode = Carbon::now()->addMonths($request->payment);
+        $payment->save();
+        Session::flash('alert','Berhasil mengdowngrade paket. Silakan melakukan pembayaran sebelum '.date('d F Y',strtotime($userpackage->expired)));
         return redirect(Help::url('bills'));
       }
+    }
+
+    public function changeplan(Request $request)
+    {
+      $bill = Packagepayment::findOrFail($request->billing);
+      if ($bill->status != 'approved') {
+        return view('kostowner.package.changeplan', compact('bill'));
+      }else {
+        Session::flash('alert','Tidak bisa merubah billing');
+        return redirect(Help::url('bills'));
+      }
+    }
+
+    public function changebill(Request $request)
+    {
+      $bill = Packagepayment::findOrFail($request->billing);
+      if ($bill->status != 'approved') {
+        $bill->end_periode = Carbon::parse($bill->start_periode)->addMonths($request->payment);
+        $bill->save();
+        return redirect(Help::url('bills/'.$bill->id));
+      }else {
+        return back();
+      }
+    }
+
+
+    private function getPaymentStatus(){
+      $r = true;
+      $userpackage = Userpackage::where('user_id',Auth::user()->id)->first();
+      if ($userpackage != null) {
+        foreach ($userpackage->Packagepayment as $p) {
+          if ($p->status == 'not_approved') {
+            $r = false;
+          }
+        }
+      }
+      return $r;
+    }
+
+    private function getPackageStatus(){
+      $r = false;
+      $userpackage = Userpackage::where('user_id',Auth::user()->id)->first();
+      if ($userpackage == null) {
+        $r = true;
+      }
+      return $r;
     }
 
 }

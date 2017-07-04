@@ -17,6 +17,11 @@ use Illuminate\Support\Facades\Hash;
 
 class HouseRoomController extends Controller
 {
+    public function __construct()
+    {
+      $this->middleware('grant');
+    }
+
     public function index(){
       $token = Help::token();
       $houselimit = 0;

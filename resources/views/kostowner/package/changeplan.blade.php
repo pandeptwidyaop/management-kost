@@ -26,20 +26,23 @@
             <div class="box-body">
               <div class="row">
                 <div class="col-md-6">
-                  <form action="{{Help::url('packages/pricing?a='.$act.'&p='.$paket)}}" method="post">
+                  <form action="{{Help::url('packages/changeplan?billing='.$bill->id)}}" method="post">
                     {{ csrf_field() }}
                     <div class="form-group">
                       <label>Paket</label>
-                      <input type="text" class="form-control" value="{{$package->name}}" disabled>
+                      <input type="text" class="form-control" value="{{$bill->Userpackage->Package->name}}" disabled>
                     </div>
                     <div class="form-group">
                       <label>Pembayaran</label>
                       <select name="payment" class="form-control" id="payment" id="payment" onchange="calculate(this.value)" required>
+                        @php
+                          $periode = Carbon\Carbon::parse($bill->start_periode)->diffInMonths(Carbon\Carbon::parse($bill->end_periode));
+                        @endphp
                         <option value="0">Pilih</option>
-                        <option value="3">3 Bulan</option>
-                        <option value="6">6 Bulan</option>
-                        <option value="12">12 Bulan</option>
-                        <option value="24">24 Bulan</option>
+                        <option value="3" {{($periode == 3) ? 'selected' : ''}} >3 Bulan</option>
+                        <option value="6" {{($periode == 6) ? 'selected' : ''}}>6 Bulan</option>
+                        <option value="12" {{($periode == 12) ? 'selected' : ''}}>12 Bulan</option>
+                        <option value="24" {{($periode == 24) ? 'selected' : ''}} >24 Bulan</option>
                       </select>
                     </div>
                     <div class="form-group">
@@ -69,7 +72,10 @@
 @endsection
 @section('js')
 <script type="text/javascript">
-  var price = '{{$package->price}}';
+  var price = '{{$bill->Userpackage->Package->price}}';
+  $(function(){
+    $('#payment').trigger('change');
+  });
   function calculate(num){
     var count = price * num;
     $.getJSON('{{url('api')}}/getpackageperiode', {month: num}, function(json, textStatus) {

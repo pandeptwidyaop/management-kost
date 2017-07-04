@@ -20,6 +20,11 @@ use DB;
 
 class MembersController extends Controller
 {
+    public function __construct()
+    {
+      $this->middleware('grant');
+    }
+  
     public function index(){
       $userpackage = Userpackage::where('user_id',Auth::user()->id)->first();
       $token = Help::token();

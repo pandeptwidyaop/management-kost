@@ -5,6 +5,8 @@ namespace App\Libraries;
 use Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
+use App\Userpackage;
+use Carbon\Carbon;
 
 class Helper {
 
@@ -57,5 +59,18 @@ class Helper {
   public static function decode($string){
     $data = strtr($string, ['*' => '=']);
     return Crypt::decryptString($data);
+  }
+
+  public static function grant(){
+    $r = true;
+    $userpackage = Userpackage::where('user_id',Auth::user()->id)->first();
+    if ($userpackage != null) {
+      if ($userpackage->expired != null) {
+        if (Carbon::now() > Carbon::parse($userpackage->expired) ) {
+          $r = false;
+        }
+      }
+    }
+    return $r;
   }
 }
