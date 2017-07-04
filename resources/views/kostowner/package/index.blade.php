@@ -64,7 +64,7 @@
                     Gunakan Paket Ini
                   </a>
                 @elseif ($userpackage->package_id == $p->id)
-                  <a href="{{Help::url('packages/mypackage')}}" class="btn btn-block btn-primary btn-flat">
+                  <a href="{{Help::js()}}" class="btn btn-block btn-primary btn-flat">
                     Paket Anda Saat Ini
                   </a>
                 @elseif ($userpackage->Package->price < $p->price && $room < ($p->house_limit * $p->room_limit))
