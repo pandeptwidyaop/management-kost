@@ -21,7 +21,8 @@ function getActiveMenu(){
     $('#k-bill').addClass('active');
   }else if (add.search('packages') > 0) {
     $('#k-packages').addClass('active');
-
+  }else if (add.search('reports') > 0) {
+    $('#k-report').addClass('active');
   }
 
 }
