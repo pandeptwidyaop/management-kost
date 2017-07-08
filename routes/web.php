@@ -111,6 +111,11 @@ Route::group(['middleware' => 'role:kost_owner','prefix' => 'ibu-kost','namespac
   Route::get('bills/{id}/payment','BillController@payment');
   Route::post('bills/{id}/confirm', 'BillController@confirm');
   Route::get('banks','BillController@getListOfBank');
+
+  Route::get('profile','ProfileController@index');
+  Route::post('profile','ProfileController@update');
+  Route::post('profile/avatar','ProfileController@changeimage');
+  Route::post('profile/password','ProfileController@changepassword');
 });
 
 Route::group(['middleware' => 'role:tenant','prefix' => 'anak-kost','namespace' => 'Tenant'], function(){

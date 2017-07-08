@@ -46,55 +46,56 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach ($userpackage->House as $house)
-                    @foreach ($house->Room as $room)
-                      @foreach ($room->Rental as $rent)
-                        @php
-                          $app = 0;
-                          foreach ($rent->Kostpayment as $pay) {
-                            if ($pay->status == 'not_approved') {
-                              $app ++;
-                            }
-                          }
-                        @endphp
-                        @if ($rent->status == 'active' && $app == 0)
+                  @if ($userpackage != null)
+                    @foreach ($userpackage->House as $house)
+                      @foreach ($house->Room as $room)
+                        @foreach ($room->Rental as $rent)
                           @php
-                            $now = Carbon\Carbon::now();
-                            $until = Carbon\Carbon::parse($rent->date);
-                            $batas = Carbon\Carbon::now()->diffInDays($until);
+                            $app = 0;
+                            foreach ($rent->Kostpayment as $pay) {
+                              if ($pay->status == 'not_approved') {
+                                $app ++;
+                              }
+                            }
                           @endphp
-                          <tr>
-                            <td>
-                              @if ($batas < 4 || $now >= $until)
-                                <div class="btn-group">
-                                  <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
-                                    <span class="caret"></span>
-                                    <span>Pilih</span>
-                                  </button>
-                                  <ul class="dropdown-menu" role="menu">
-                                    <li><a href="{{Help::js()}}" onclick="createBilling('{{$rent->id}}')">Buat Tagihan</a></li>
-                                  </ul>
-                                </div>
-                              @endif
-                            </td>
-                            <td>{{$rent->User->name}}</td>
-                            <td>{{$rent->User->email}}</td>
-                            <td>{{$house->name}}</td>
-                            <td>{{$room->number}}</td>
-                            <td>
-                              @if ($now >= $until)
-                                <span class="label label-danger">{{$batas}} Hari yang lalu</span>
-                              @else
-                                <span class="label label-primary">{{$batas}} Hari</span>
-                              @endif
-                            </td>
-                            <td>Rp. {{number_format($room->price,2,',','.')}}</td>
-                          </tr>
-                        @endif
+                          @if ($rent->status == 'active' && $app == 0)
+                            @php
+                              $now = Carbon\Carbon::now();
+                              $until = Carbon\Carbon::parse($rent->date);
+                              $batas = Carbon\Carbon::now()->diffInDays($until);
+                            @endphp
+                            <tr>
+                              <td>
+                                @if ($batas < 4 || $now >= $until)
+                                  <div class="btn-group">
+                                    <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
+                                      <span class="caret"></span>
+                                      <span>Pilih</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                      <li><a href="{{Help::js()}}" onclick="createBilling('{{$rent->id}}')">Buat Tagihan</a></li>
+                                    </ul>
+                                  </div>
+                                @endif
+                              </td>
+                              <td>{{$rent->User->name}}</td>
+                              <td>{{$rent->User->email}}</td>
+                              <td>{{$house->name}}</td>
+                              <td>{{$room->number}}</td>
+                              <td>
+                                @if ($now >= $until)
+                                  <span class="label label-danger">{{$batas}} Hari yang lalu</span>
+                                @else
+                                  <span class="label label-primary">{{$batas}} Hari</span>
+                                @endif
+                              </td>
+                              <td>Rp. {{number_format($room->price,2,',','.')}}</td>
+                            </tr>
+                          @endif
+                        @endforeach
                       @endforeach
                     @endforeach
-                  @endforeach
-
+                  @endif
                 </tbody>
               </table>
             </div>

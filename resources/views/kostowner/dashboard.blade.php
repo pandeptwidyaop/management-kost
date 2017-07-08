@@ -92,20 +92,43 @@
       </div>
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Title</h3>
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-              <i class="fa fa-minus"></i></button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-              <i class="fa fa-times"></i></button>
-          </div>
+          <h3 class="box-title">Laporan Anak Kost</h3>
+
         </div>
         <div class="box-body">
-          Start creating your amazing application!
+          <div class="row">
+            @if ($userpackage != null)
+              @foreach ($userpackage->House as $house)
+                @foreach ($house->Room as $room)
+                  @foreach ($room->Rental as $rent)
+                    @if ($rent->status == 'active')
+                      @foreach ($rent->Report as $report)
+                        @if ($report->read_status != 'read')
+                          <div class="col-md-4">
+                            <div class="box box-widget widget-user">
+                              <div class="widget-user-header bg-yellow-active">
+                                <h3 class="widget-user-username">{{$rent->User->name}}</h3>
+                                <h5 class="widget-user-desc">{{$rent->User->email}}</h5>
+                              </div>
+                              <div class="widget-user-image">
+                                <img class="img-circle" src="{{Help::img($rent->User->avatar)}}" alt="{{$rent->User->name}}">
+                              </div>
+                              <div class="box-footer">
+                                {!!$report->message!!}
+                                <p class="text-center"><a href="{{Help::url('reports/'.$report->id)}}">Baca</a></p>
+                              </div>
+                            </div>
+                          </div>
+                        @endif
+                      @endforeach
+                    @endif
+                  @endforeach
+                @endforeach
+              @endforeach
+            @endif
+          </div>
         </div>
-        <div class="box-footer">
-          Footer
-        </div>
+
       </div>
     </section>
   </div>
