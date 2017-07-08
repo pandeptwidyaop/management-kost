@@ -8,8 +8,7 @@ class Kostpayment extends Model
 {
     protected $fillable = [
       'rental_id',
-      'month',
-      'year',
+      'date',
       'price',
       'status',
       'image'

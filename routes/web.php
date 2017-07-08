@@ -89,6 +89,10 @@ Route::group(['middleware' => 'role:kost_owner','prefix' => 'ibu-kost','namespac
   Route::delete('members/{id}/remove','MembersController@remove');
 
   Route::get('payments', 'PaymentController@index');
+  Route::post('payments/approve/{id}','PaymentController@approve');
+  Route::get('payments/create','PaymentController@create');
+  Route::post('payments/create','PaymentController@store');
+  Route::delete('payments/{id}','PaymentController@destroy');
 
   Route::get('reports','ReportController@index');
   Route::get('reports/{id}', 'ReportController@show');

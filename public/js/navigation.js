@@ -23,6 +23,8 @@ function getActiveMenu(){
     $('#k-packages').addClass('active');
   }else if (add.search('reports') > 0) {
     $('#k-report').addClass('active');
+  }else if (add.search('payments') > 0) {
+    $('#k-payments').addClass('active')
   }
 
 }

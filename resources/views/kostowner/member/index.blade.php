@@ -41,6 +41,7 @@
                     <th>Nomor Kamar</th>
                     <th>Registered</th>
                     <th>Laporan</th>
+                    <th>Berlaku Sampai</th>
                     <th>Tunggakan</th>
                   </tr>
                 </thead>
@@ -84,6 +85,10 @@
                             <td>{{$room->number}}</td>
                             <td>{{date('d F Y', strtotime($rent->created_at))}}</td>
                             <td>{{$laporan}}</td>
+                            @php
+                              $date = Carbon\Carbon::parse($rent->date)->addMonths(1);
+                            @endphp
+                            <td>{{date('d F Y',strtotime($date))}}</td>
                             <td>Rp. {{number_format($tunggakan,2,',','.')}}</td>
                           </tr>
                         @endif

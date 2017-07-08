@@ -17,6 +17,7 @@ class CreateRentalsTable extends Migration
             $table->increments('id');
             $table->integer('room_id')->unsigned();
             $table->integer('user_id')->unsigned()->nullable();
+            $table->date('date');
             $table->enum('status',['active','not_active']);
             $table->timestamps();
         });

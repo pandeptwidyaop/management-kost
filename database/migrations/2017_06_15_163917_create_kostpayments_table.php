@@ -16,8 +16,7 @@ class CreateKostpaymentsTable extends Migration
         Schema::create('kostpayments', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('rental_id')->unsigned();
-            $table->char('month',2);
-            $table->char('year',4);
+            $table->date('date');
             $table->bigInteger('price');
             $table->enum('status',['approved','not_approved'])->default('not_approved');
             $table->string('image')->nullable();

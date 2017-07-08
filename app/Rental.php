@@ -9,6 +9,7 @@ class Rental extends Model
     protected $fillable = [
       'room_id',
       'user_id',
+      'date',
       'status'
     ];
 
