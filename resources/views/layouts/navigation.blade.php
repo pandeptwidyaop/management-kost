@@ -60,12 +60,12 @@
       </a>
     </li>
   @elseif(Auth::user()->type == 'tenant')
-    <li id="k-bill">
+    <li id="t-bill">
       <a href="{{Help::url('billings')}}">
         <i class="fa fa-paper-plane"></i> <span>Bills</span>
       </a>
     </li>
-    <li id="k-report">
+    <li id="t-report">
       <a href="{{Help::url('reports')}}">
         <i class="fa fa-bug"></i> <span>Reports</span>
       </a>

@@ -25,6 +25,10 @@ function getActiveMenu(){
     $('#k-report').addClass('active');
   }else if (add.search('payments') > 0) {
     $('#k-payments').addClass('active')
+  }else if (add.search('bank') > 0) {
+    $('#k-banks').addClass('active');
+  }else if (add.search('billings') > 0) {
+    $('#t-bill').addClass('active');
   }
 
 }

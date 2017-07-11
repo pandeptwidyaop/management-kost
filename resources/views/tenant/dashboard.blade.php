@@ -68,6 +68,10 @@
                         <td><b>Harga Perbulan</b></td>
                         <td>Rp. {{number_format($rent->Room->price,2,',','.')}}</td>
                       </tr>
+                      <tr>
+                        <td><b>Berlaku Sampai</b></td>
+                        <td>{{date('d F Y',strtotime($rent->date))}}</td>
+                      </tr>
                     </table>
                   </div>
                 </div>
