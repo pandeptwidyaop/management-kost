@@ -97,6 +97,12 @@ Route::group(['middleware' => 'role:kost_owner','prefix' => 'ibu-kost','namespac
   Route::get('reports','ReportController@index');
   Route::get('reports/{id}', 'ReportController@show');
 
+  Route::get('bank','BankController@index');
+  Route::get('bank/{id}/edit','BankController@edit');
+  Route::post('bank','BankController@store');
+  Route::put('bank/{id}','BankController@update');
+  Route::delete('bank/{id}','BankController@destroy');
+
   Route::get('packages', 'PackageController@index');
   Route::get('packages/{id}/select', 'PackageController@select');
   Route::get('packages/{id}/upgrade', 'PackageController@upgrade');
@@ -123,4 +129,8 @@ Route::group(['middleware' => 'role:tenant','prefix' => 'anak-kost','namespace' 
     return redirect('anak-kost/dashboard');
   });
   Route::get('dashboard','DashboardController@index');
+  Route::get('billings','BillingController@index');
+  Route::post('billings/{id}','BillingController@confirm');
+  Route::get('reports','ReportController@index');
+  Route::post('reports','ReportController@store');
 });

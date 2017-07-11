@@ -43,6 +43,11 @@
         <i class="fa fa-bug"></i> <span>Reports</span>
       </a>
     </li>
+    <li id="k-banks">
+      <a href="{{Help::url('bank')}}">
+        <i class="fa fa-bank"></i> <span>Banks</span>
+      </a>
+    </li>
     <li class="header">SYSTEM</li>
     <li id="k-packages">
       <a href="{{Help::url('packages')}}">
@@ -54,7 +59,16 @@
         <i class="fa fa-paper-plane"></i> <span>Bills</span>
       </a>
     </li>
-  @else
-
+  @elseif(Auth::user()->type == 'tenant')
+    <li id="k-bill">
+      <a href="{{Help::url('billings')}}">
+        <i class="fa fa-paper-plane"></i> <span>Bills</span>
+      </a>
+    </li>
+    <li id="k-report">
+      <a href="{{Help::url('reports')}}">
+        <i class="fa fa-bug"></i> <span>Reports</span>
+      </a>
+    </li>
   @endif
 </ul>

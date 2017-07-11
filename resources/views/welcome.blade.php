@@ -9,6 +9,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="{{asset('css/app.css')}}">
 
         <!-- Styles -->
         <style>
@@ -78,17 +79,41 @@
             @endif
 
             <div class="content">
+                <h4>Welcome to</h4>
                 <div class="title m-b-md">
-                    Laravel
+                    MANAGEMENT KOST
                 </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
+                <br>
+                <p style="font-size:20px;font-weight:bold">Sebagai implementasi Project UAS Cloud Computing</p>
+                <h2>Sistem Informasi Manajemen Rumah Kost Berbasis Cloud Computing</h2>
+                <b>
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Level</th>
+                      </tr>
+                    </thead>
+                      <tbody>
+                        <tr>
+                          <td>admin@gmail.com</td>
+                          <td>123456</td>
+                          <td>Admin</td>
+                        </tr>
+                        <tr>
+                          <td>janedoe@gmail.com</td>
+                          <td>123456</td>
+                          <td>Ibu Kost</td>
+                        </tr>
+                        <tr>
+                          <td>johndoe@gmail.com</td>
+                          <td>123456</td>
+                          <td>Anak Kost</td>
+                        </tr>
+                      </tbody>
+                  </table>
+                </b>
             </div>
         </div>
     </body>
