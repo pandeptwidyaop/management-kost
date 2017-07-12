@@ -43,6 +43,7 @@ class RegistrationController extends Controller
       $rent = new Rental;
       $rent->user_id = $user->id;
       $rent->room_id = $request->ro;
+      $rent->date = Carbon::now();
       $rent->save();
       if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
         return redirect()->intended('anak-kost');
