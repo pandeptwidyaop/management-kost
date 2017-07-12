@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\KostOwner;
+namespace App\Http\Controllers\Tenant;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -15,7 +15,7 @@ class ProfileController extends Controller
 {
     public function index(){
       $data = User::findOrFail(Auth::user()->id);
-      return view('kostowner.profile.index',compact('data'));
+      return view('tenant.profile.index',compact('data'));
     }
 
     public function update(Request $request){

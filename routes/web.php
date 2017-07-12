@@ -133,4 +133,8 @@ Route::group(['middleware' => 'role:tenant','prefix' => 'anak-kost','namespace' 
   Route::post('billings/{id}','BillingController@confirm');
   Route::get('reports','ReportController@index');
   Route::post('reports','ReportController@store');
+  Route::get('profile','ProfileController@index');
+  Route::post('profile','ProfileController@update');
+  Route::post('profile/avatar','ProfileController@changeimage');
+  Route::post('profile/password','ProfileController@changepassword');
 });
