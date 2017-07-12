@@ -24,7 +24,7 @@ class MembersController extends Controller
     {
       $this->middleware('grant');
     }
-  
+
     public function index(){
       $userpackage = Userpackage::where('user_id',Auth::user()->id)->first();
       $token = Help::token();
@@ -107,10 +107,19 @@ class MembersController extends Controller
       if ($userpackage != null) {
         $limit = 0;
         $total = 0;
-        $limit = $userpackage->Package->house_limit * $userpackage->Package->room_limit;
+        $limit = 0;
+        foreach ($userpackage->House  as $house) {
+          foreach ($house->Room as $room) {
+            foreach ($room->Rental as $r) {
+              if ($r->status == 'active') {
+                $total+=1;
+              }
+            }
+          }
+        }
         foreach ($userpackage->House as $h) {
           foreach ($h->Room as $r) {
-            $total += 1;
+            $limit += 1;
           }
         }
         return ($total < $limit) ? true : false;
