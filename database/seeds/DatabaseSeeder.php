@@ -13,5 +13,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(Users::class);
         $this->call(Packages::class);
+        $this->call(Userpackage::class);
+        $this->call(House::class);
+        $this->call(Housepicture::class);
+        $this->call(Room::class);
+        $this->call(Rental::class);
     }
 }

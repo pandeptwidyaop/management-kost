@@ -91,10 +91,10 @@
         {{ csrf_field() }}
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
+          <h4 class="modal-title">Ganti Avatar</h4>
         </div>
         <div class="modal-body">
-          <input type="file" name="avatar" class="form-control-file" accept="image/jpeg">
+          <input type="file" name="avatar" class="form-control-file" accept="image/*">
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary btn-flat">Simpan</button>

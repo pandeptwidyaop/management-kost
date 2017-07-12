@@ -29,7 +29,7 @@
         <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
           <div class="box">
             <div class="box-header with-border">
-              <h3 class="box-title">Tambah Paket Manajemen Kost</h3>
+              <h3 class="box-title">Edit Paket Manajemen Kost</h3>
             </div>
 
             <div class="box-body">
